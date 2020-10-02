@@ -24,7 +24,7 @@ class User(db.Model):
     def __repr__(self):
         return f'<user_id={self.user_id} username={self.username}>'
 
-class Categories(db.Model):
+class Category(db.Model):
     """A category."""
 
     __tablename__ = "categories"
@@ -32,10 +32,12 @@ class Categories(db.Model):
                         autoincrement=True,
                         primary_key=True)
     category_name = db.Column(db.String(50))
+    api_id = db.Column(db.Integer)
     def as_dict(self):
             return {
             'category_id': self.category_id,
-            'category_name': self.category_name
+            'category_name': self.category_name,
+            'api_id': self.api_id
             }
 
     def __repr__(self):

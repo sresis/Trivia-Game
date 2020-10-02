@@ -5,7 +5,7 @@ const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
-const {Button, Alert, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
+const {Button, Alert, Dropdown, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
     Form, FormControl, Nav, Navbar, Spinner, Popover } = ReactBootstrap;
     
 
@@ -14,13 +14,6 @@ const LoginContext = React.createContext(null);
 
 // handle showing component
 function App () {
-
-
-
-
-    
-
-
 
     return (
         <Router>
@@ -50,11 +43,49 @@ function Homepage() {
     )
 }
 
-function ChooseCategory() {
+function ChooseCategory(props) {
+    // store the category details to be displayed
+    const category_details = {'category_name': props.category_name, 'api_id': props.api_id}
+    
+    const [category, setCategory] = React.useState([]);
+    const history = ReactRouterDOM.useHistory();
+
+    // get the category data from the server
+    React.useEffect(() => {
+
+        fetch('/api/categories', {
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            const cat_info = []
+            // loop and get all user info
+            for (const idx in data) {
+                cat_info.push(
+                    <div>
+                        {data[idx]['category_name']}
+                    </div>
+                );
+            }
+            setCategory(cat_info);
+        })
+        // reset to avoid infinite loop
+    }, [props.category_name, props.api_uri])
+
 
     return(
         <Container fluid="md" id="choose-category">
             <h1>Choose a category!</h1>
+            <div>
+                {category}
+            </div>
+            <Dropdown
+                title = "Select Category"
+                list = {category}
+            />
         </Container>
     )
 }
