@@ -5,7 +5,7 @@ const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
-const {Button, Alert, Dropdown, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
+const {Button, Alert, Dropdown, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
     Form, FormControl, Nav, Navbar, Spinner, Popover } = ReactBootstrap;
     
 
@@ -64,10 +64,8 @@ function ChooseCategory(props) {
             const cat_info = []
             // loop and get all user info
             for (const idx in data) {
-                cat_info.push(
-                    <div>
-                        {data[idx]['category_name']}
-                    </div>
+                cat_info.push( 
+                    <Dropdown.Item >{data[idx]['category_name']}</Dropdown.Item>
                 );
             }
             setCategory(cat_info);
@@ -79,13 +77,10 @@ function ChooseCategory(props) {
     return(
         <Container fluid="md" id="choose-category">
             <h1>Choose a category!</h1>
-            <div>
+            
+            <DropdownButton id="dropdown-cat" title="Choose a Category!">
                 {category}
-            </div>
-            <Dropdown
-                title = "Select Category"
-                list = {category}
-            />
+            </DropdownButton>
         </Container>
     )
 }
