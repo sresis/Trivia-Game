@@ -3,6 +3,7 @@ from flask import (Flask, render_template, request, flash, session, jsonify,
 from model import connect_to_db, Category, User
 from jinja2 import StrictUndefined
 from DB import categories
+import api
 
 
 app = Flask(__name__)
@@ -27,9 +28,20 @@ def get_categories():
     for category in all_categories:
         category_item = Category.as_dict(category)
         category_list.append(category_item)
+
+    
+
+
     
     return jsonify(category_list)
 
+@app.route('/api/category/<api_id>', methods=['POST'])
+def get_question(api_id):
+    """Returns a question in the selected category."""
+    question_info = api.get_category_question(22)
+    print(question_info)
+    return jsonify(question_info)
+    
 
 
 
