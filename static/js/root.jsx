@@ -122,13 +122,20 @@ function CategoryQuestion(props) {
             possible_answers.push(
                 <Dropdown.Item id="item">{correct_ans}</Dropdown.Item>
             )
-            const question_info = data.question;
+            // get rid of weird characters
+
+            var question_info = data.question;
+            question_info = question_info.replace("&amp;", "&");
+            question_info = question_info.replace("&#039;", "'");
+            question_info = question_info.replace("&#&quot;", "''");
+            question_info = question_info.replace("&quot;", "''");
             const incorrect = data.incorrect_answers;
             for(const item of incorrect) {
                 possible_answers.push(
                     <Dropdown.Item id="item">{item}</Dropdown.Item>
                 )
             }
+            // need to randomize the items in possible answers
             
             setQuestion(question_info);
             setIncorrectAnswer(possible_answers);

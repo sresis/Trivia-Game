@@ -24,24 +24,44 @@ class User(db.Model):
     def __repr__(self):
         return f'<user_id={self.user_id} username={self.username}>'
 
+class Question(db.Model):
+    """A question."""
+    __tablename__ = "questions"
+    question_id = db.Column(db.Integer,
+                    autoincrement=True,
+                    primary_key=True)
+    question_title = db.Column(db.String)
+    question_answer = db.Column(db.String)
+    incorrect_1 = db.Column(db.String)
+    incorrect_2 = db.Column(db.String)
+    incorrect_3 = db.Column(db.String)
+    question_difficulty = db.Column(db.String)
+
+    # foreign key..category ID
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.api_id'))
+    category = db.relationship('Category', backref='questions')
+   
+    def __repr__(self):
+        return f'<question_id={self.question_id} question_title={self.question_title}>'
+
+
+
 class Category(db.Model):
     """A category."""
 
     __tablename__ = "categories"
-    category_id = db.Column(db.Integer,
-                        autoincrement=True,
+    api_id = db.Column(db.Integer,
                         primary_key=True)
     category_name = db.Column(db.String(50))
-    api_id = db.Column(db.Integer)
     def as_dict(self):
             return {
-            'category_id': self.category_id,
+            'api_id': self.api_id,
             'category_name': self.category_name,
             'api_id': self.api_id
             }
 
     def __repr__(self):
-        return f'<category_id={self.category_id} category_name={self.category_name}>'
+        return f'<api_id={self.api_id} category_name={self.category_name}>'
 
 def connect_to_db(flask_app, db_uri='postgresql:///trivia_game_db', echo=True):
     flask_app.config['SQLALCHEMY_DATABASE_URI'] = db_uri
