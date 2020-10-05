@@ -38,7 +38,7 @@ def get_categories():
 @app.route('/api/category/<api_id>', methods=['POST'])
 def get_question(api_id):
     """Returns a question in the selected category."""
-    question_info = api.get_category_question(api_id)
+    question_info = questions.get_category_questions(api_id)
     print(question_info)
     return jsonify(question_info)
     
