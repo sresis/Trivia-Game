@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
 const {Button, Alert, Dropdown, ButtonGroup, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
-    Form, FormControl, Nav, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
+    Form, FormControl, Nav, MDBContainer, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
     
 
 // instance of context
@@ -120,13 +120,13 @@ function CategoryQuestion(props) {
             const correct_ans = data.correct_answer;
             console.log(correct_ans);
             possible_answers.push(
-                <ul>{correct_ans}</ul>
+                <Dropdown.Item id="item">{correct_ans}</Dropdown.Item>
             )
             const question_info = data.question;
             const incorrect = data.incorrect_answers;
             for(const item of incorrect) {
                 possible_answers.push(
-                <ul>{item}</ul>
+                    <Dropdown.Item id="item">{item}</Dropdown.Item>
                 )
             }
             
@@ -140,9 +140,9 @@ function CategoryQuestion(props) {
     return (
         <Form.Group>
             <Form.Label>{question}</Form.Label>
-                <div>
+                <DropdownButton id="dropdown-cat" title="Choose an Answer">
                     {incorrectAnswer}
-                </div>
+                </DropdownButton>
          
         </Form.Group>
     )
