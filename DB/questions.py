@@ -1,4 +1,4 @@
-from model import db, Question, connect_to_db
+from model import db, Question
 
 def create_question(question_title, question_answer, incorrect_1,
 incorrect_2, incorrect_3, question_difficulty, category_id):
@@ -17,6 +17,6 @@ def get_category_questions(category_id):
     """ Returns questions for a category ID."""
     category_questions = Question.query.filter(Question.category_id == category_id)
 
-    print(category_questions)
+    return category_questions
 
-get_category_questions(22)
+#get_category_questions(22)

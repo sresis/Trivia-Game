@@ -40,6 +40,19 @@ class Question(db.Model):
     # foreign key..category ID
     category_id = db.Column(db.Integer, db.ForeignKey('categories.api_id'))
     category = db.relationship('Category', backref='questions')
+
+    def as_dict(self):
+        return {
+        'question_id': self.question_id,
+        'question_title': self.question_title,
+        'question_answer': self.question_answer,
+        'incorrect_1': self.incorrect_1,
+        'incorrect_2': self.incorrect_2,
+        'incorrect_3': self.incorrect_3,
+        'question_difficulty': self.question_difficulty,
+        'category_id': self.category_id
+
+        }
    
     def __repr__(self):
         return f'<question_id={self.question_id} question_title={self.question_title}>'

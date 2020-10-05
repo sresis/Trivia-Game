@@ -100,12 +100,11 @@ function CategoryQuestion(props) {
     // stores question details to be shown in HTML
     const[question, setQuestion] = React.useState([]);
     const history = ReactRouterDOM.useHistory();
-    const [incorrectAnswer, setIncorrectAnswer] = React.useState([]);
+    const [allAnswers, setAllAnswers] = React.useState([]);
     const possible_answers = []
 
     React.useEffect(() => {
 
-        
         fetch(`/api/category/${api_id}`, {
             method: 'POST',
 			credentials: 'include',
@@ -115,30 +114,30 @@ function CategoryQuestion(props) {
         })
         .then(res => res.json())
         .then(data => {
-            
             // add correct answer to possible answers
-            const correct_ans = data.correct_answer;
-            console.log(correct_ans);
-            possible_answers.push(
-                <Dropdown.Item id="item">{correct_ans}</Dropdown.Item>
-            )
+            console.log(data)
+            const totalAnswers = [data.incorrect_1, data.incorrect_2, data.question_answer, data.incorrect_3];
+            console.log(totalAnswers);
+            console.log('test');
+            for (const answer of totalAnswers.values()) {
+                console.log(answer);
+                possible_answers.push(
+                    <Dropdown.Item id={answer}>{answer}</Dropdown.Item>
+                )
+            }
+            
             // get rid of weird characters
 
-            var question_info = data.question;
+            var question_info = data.question_title;
             question_info = question_info.replace("&amp;", "&");
             question_info = question_info.replace("&#039;", "'");
             question_info = question_info.replace("&#&quot;", "''");
             question_info = question_info.replace("&quot;", "''");
-            const incorrect = data.incorrect_answers;
-            for(const item of incorrect) {
-                possible_answers.push(
-                    <Dropdown.Item id="item">{item}</Dropdown.Item>
-                )
-            }
+            
             // need to randomize the items in possible answers
             
             setQuestion(question_info);
-            setIncorrectAnswer(possible_answers);
+            setAllAnswers(possible_answers);
         })
         
     }, [props.question])
@@ -148,7 +147,7 @@ function CategoryQuestion(props) {
         <Form.Group>
             <Form.Label>{question}</Form.Label>
                 <DropdownButton id="dropdown-cat" title="Choose an Answer">
-                    {incorrectAnswer}
+                    {allAnswers}
                 </DropdownButton>
          
         </Form.Group>
