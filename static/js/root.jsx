@@ -6,7 +6,7 @@ const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
 const {Button, Alert, Dropdown, ButtonGroup, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
-    Form, FormControl, Nav, MDBContainer, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
+    Form, FormControl, RadioGroup, FormControlLabel, FormLabel, Nav, MDBContainer, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
     
 
 // instance of context
@@ -99,9 +99,30 @@ function CategoryQuestion(props) {
 
     // stores question details to be shown in HTML
     const[question, setQuestion] = React.useState([]);
+    const [correctAns, setCorrectAns] = React.useState([]);
     const history = ReactRouterDOM.useHistory();
     const [allAnswers, setAllAnswers] = React.useState([]);
     const possible_answers = []
+    const [selectedAnswer, setSelectedAnswer] = React.useState([]);
+
+    // sets the user response
+    
+    // check answer
+    const checkAnswer = (evt) => {
+        evt.preventDefault();
+        if (selectedAnswer === correctAns) {
+            alert('correct');
+        }
+        else {
+            alert('wrong');
+        }
+
+    
+        
+    }
+    
+
+
 
     React.useEffect(() => {
 
@@ -122,10 +143,18 @@ function CategoryQuestion(props) {
             for (const answer of totalAnswers.values()) {
                 console.log(answer);
                 possible_answers.push(
-                    <Dropdown.Item id={answer}>{answer}</Dropdown.Item>
+                    <div>
+                        <label>
+                            <input type="radio" id={answer} name="answer" value={answer} />
+                            {answer}
+                        </label>
+                    </div>
+                    
+                    
                 )
             }
-            
+            // set correct answer
+            const correctVal = data.question_answer;
             // get rid of weird characters
 
             var question_info = data.question_title;
@@ -138,19 +167,26 @@ function CategoryQuestion(props) {
             
             setQuestion(question_info);
             setAllAnswers(possible_answers);
+            setCorrectAns(correctVal);
+
         })
         
     }, [props.question])
 
     // get the question info
     return (
-        <Form.Group>
-            <Form.Label>{question}</Form.Label>
-                <DropdownButton id="dropdown-cat" title="Choose an Answer">
-                    {allAnswers}
-                </DropdownButton>
-         
-        </Form.Group>
+                <Form>
+                    <FormLabel>{question}</FormLabel>
+
+                    <div onChange={e => setSelectedAnswer(e.target.value)} >
+                        {allAnswers}
+                    </div>
+                    
+                    <Button className="btn" type="submit" onClick={checkAnswer}>
+                        Submit
+                    </Button>
+                </Form>
+                
     )
 
 }
