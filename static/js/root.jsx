@@ -5,8 +5,8 @@ const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
-const {Button, Alert, Dropdown, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
-    Form, FormControl, Nav, Navbar, Spinner, Popover } = ReactBootstrap;
+const {Button, Alert, Dropdown, ButtonGroup, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
+    Form, FormControl, Nav, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
     
 
 // instance of context
@@ -66,6 +66,7 @@ function ChooseCategory(props) {
             const cat_info = []
             // loop and get all user info
             for (const idx in data) {
+                
                 cat_info.push( 
                     <Dropdown.Item
                     key = {data[idx]['api_id']}
@@ -99,13 +100,13 @@ function CategoryQuestion(props) {
     // stores question details to be shown in HTML
     const[question, setQuestion] = React.useState([]);
     const history = ReactRouterDOM.useHistory();
-
+    const [incorrectAnswer, setIncorrectAnswer] = React.useState([]);
+    const possible_answers = []
 
     React.useEffect(() => {
 
-
+        
         fetch(`/api/category/${api_id}`, {
-
             method: 'POST',
 			credentials: 'include',
 			headers: {
@@ -114,21 +115,36 @@ function CategoryQuestion(props) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
+            
+            // add correct answer to possible answers
+            const correct_ans = data.correct_answer;
+            console.log(correct_ans);
+            possible_answers.push(
+                <ul>{correct_ans}</ul>
+            )
             const question_info = data.question;
+            const incorrect = data.incorrect_answers;
+            for(const item of incorrect) {
+                possible_answers.push(
+                <ul>{item}</ul>
+                )
+            }
+            
             setQuestion(question_info);
+            setIncorrectAnswer(possible_answers);
         })
         
     }, [props.question])
 
     // get the question info
     return (
-        <Container>
-            <h1>hellooooo</h1>
-            <h2>{question}</h2>
+        <Form.Group>
+            <Form.Label>{question}</Form.Label>
+                <div>
+                    {incorrectAnswer}
+                </div>
          
-
-        </Container>
+        </Form.Group>
     )
 
 }

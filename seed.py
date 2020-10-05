@@ -13,7 +13,7 @@ os.system('createdb trivia_game_db')
 model.connect_to_db(server.app)
 model.db.create_all()
 
-category_list = [['Pop Music', 770], ['World Capitals', 78], ['Sports', 42]]
+category_list = [['Animals', 27], ['Geography', 22], ['Sports', 21]]
 
 for item in category_list:
     #verify that it isn't already in DB
