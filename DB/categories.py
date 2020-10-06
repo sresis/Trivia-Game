@@ -1,9 +1,9 @@
 from model import db, Category
 
-def create_category(category_name, api_id):
+def create_category(category_name, api_id, category_image):
     """Create and return a category."""
 
-    category = Category(category_name=category_name, api_id=api_id)
+    category = Category(category_name=category_name, api_id=api_id, category_image=category_image)
 
     db.session.add(category)
     db.session.commit()

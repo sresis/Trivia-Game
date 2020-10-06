@@ -69,8 +69,8 @@ function ChooseCategory(props) {
             for (const idx in data) {
                 
                 cat_info.push(
-                    <Carousel.Item>
-                        <img src="https://st.depositphotos.com/1265046/1328/i/450/depositphotos_13281915-stock-photo-human-brain-in-x-ray.jpg"></img>
+                    <Carousel.Item className="category-item"> 
+                        <img src={data[idx]['category_image']}></img>
                         <Carousel.Caption>
                             <h3>{data[idx]['category_name']}</h3>
                             <Button onClick={()=> history.push(`/category-questions/${data[idx]['api_id']}`)} >Select</Button>

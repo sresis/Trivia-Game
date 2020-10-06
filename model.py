@@ -50,7 +50,7 @@ class Question(db.Model):
         'incorrect_2': self.incorrect_2,
         'incorrect_3': self.incorrect_3,
         'question_difficulty': self.question_difficulty,
-        'category_id': self.category_id
+        'category_id': self.category_id,
 
         }
    
@@ -66,11 +66,13 @@ class Category(db.Model):
     api_id = db.Column(db.Integer,
                         primary_key=True)
     category_name = db.Column(db.String(50))
+    category_image = db.Column(db.String)
     def as_dict(self):
             return {
             'api_id': self.api_id,
             'category_name': self.category_name,
-            'api_id': self.api_id
+            'api_id': self.api_id,
+            'category_image': self.category_image
             }
 
     def __repr__(self):

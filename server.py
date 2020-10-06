@@ -39,7 +39,7 @@ def get_categories():
 @app.route('/api/category/<api_id>', methods=['POST'])
 def get_question(api_id):
     """Returns a question in the selected category."""
-    cat_questions = questions.get_category_questions(22)
+    cat_questions = questions.get_category_questions(api_id)
     # gets all questions in that category
     questions_list = []
     for question in cat_questions:
