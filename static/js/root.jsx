@@ -5,7 +5,7 @@ const Prompt = ReactRouterDOM.Prompt;
 const Switch = ReactRouterDOM.Switch;
 const Redirect = ReactRouterDOM.Redirect;
 const Autocomplete = React;
-const {Button, Alert, Dropdown, ButtonGroup, DropdownButton, Col, Row, Card, CardColumns, CardGroup, Container, Collapse, 
+const {Button, Alert, Dropdown, ButtonGroup, DropdownButton, Col, Row, Card, Carousel, CardColumns, CardGroup, Container, Collapse, 
     Form, FormControl, RadioGroup, FormControlLabel, FormLabel, Nav, MDBContainer, Navbar, Radio, Spinner, Popover, InputGroup } = ReactBootstrap;
     
 
@@ -51,6 +51,7 @@ function ChooseCategory(props) {
     
     const [category, setCategory] = React.useState([]);
     const history = ReactRouterDOM.useHistory();
+    // make it look cooler at beginning? cards? images?
 
     // get the category data from the server
     React.useEffect(() => {
@@ -67,12 +68,14 @@ function ChooseCategory(props) {
             // loop and get all user info
             for (const idx in data) {
                 
-                cat_info.push( 
-                    <Dropdown.Item
-                    key = {data[idx]['api_id']}
-                    onClick={()=> history.push(`/category-questions/${data[idx]['api_id']}`)} >
-                        {data[idx]['category_name']}
-                    </Dropdown.Item>
+                cat_info.push(
+                    <Carousel.Item>
+                        <img src="https://st.depositphotos.com/1265046/1328/i/450/depositphotos_13281915-stock-photo-human-brain-in-x-ray.jpg"></img>
+                        <Carousel.Caption>
+                            <h3>{data[idx]['category_name']}</h3>
+                            <Button onClick={()=> history.push(`/category-questions/${data[idx]['api_id']}`)} >Select</Button>
+                        </Carousel.Caption>
+                    </Carousel.Item> 
                 );
             }
             setCategory(cat_info);
@@ -84,9 +87,11 @@ function ChooseCategory(props) {
         <Container fluid="md" id="choose-category">
             <h1>Choose a category!</h1>
             
-            <DropdownButton id="dropdown-cat" title="Choose a Category!">
+            <Carousel id ="cat-caro">
                 {category}
-            </DropdownButton>
+            </Carousel>
+                
+  
         </Container>
     )
 }
@@ -104,7 +109,6 @@ function CategoryQuestion(props) {
     const [allAnswers, setAllAnswers] = React.useState([]);
     const possible_answers = []
     const [selectedAnswer, setSelectedAnswer] = React.useState([]);
-
     // sets the user response
     
     // check answer
@@ -116,13 +120,10 @@ function CategoryQuestion(props) {
         else {
             alert('wrong');
         }
-
-    
+        history.push(`/choose-category`);
         
     }
     
-
-
 
     React.useEffect(() => {
 
@@ -149,8 +150,6 @@ function CategoryQuestion(props) {
                             {answer}
                         </label>
                     </div>
-                    
-                    
                 )
             }
             // set correct answer
