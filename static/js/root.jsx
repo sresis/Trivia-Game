@@ -29,7 +29,6 @@ function App () {
                     <Route exact path='/' component={Homepage} />
                     <Route path='/choose-category' component={ChooseCategory} />
                     <Route path='/category-questions/:api_id' component={CategoryQuestion}>
-                        <CategoryQuestion />
                     </Route>
                 </Switch>
             </div>
@@ -69,8 +68,8 @@ function ChooseCategory(props) {
             for (const idx in data) {
                 
                 cat_info.push(
-                    <Carousel.Item className="category-item"> 
-                        <img src={data[idx]['category_image']}></img>
+                    <Carousel.Item> 
+                        <img className="cat-image" src={data[idx]['category_image']}></img>
                         <Carousel.Caption>
                             <h3>{data[idx]['category_name']}</h3>
                             <Button onClick={()=> history.push(`/category-questions/${data[idx]['api_id']}`)} >Select</Button>
@@ -120,11 +119,58 @@ function CategoryQuestion(props) {
         else {
             alert('wrong');
         }
-        history.push(`/choose-category`);
+        
         
     }
-    
+    const getQuestion = (evt) => {
+        evt.preventDefault();
+        const cat_id = api_id
+        alert(cat_id);
 
+
+        fetch(`/api/category/${cat_id}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+        .then(res => res.json())
+        .then(data => {
+            // add correct answer to possible answers
+            console.log(data);
+            const totalAnswers = [data.incorrect_1, data.incorrect_2, data.question_answer, data.incorrect_3];
+            console.log(totalAnswers);
+            console.log('test');
+            for (const answer of totalAnswers.values()) {
+                console.log(answer);
+                possible_answers.push(
+                    <div>
+                        <label>
+                            <input type="radio" id={answer} name="answer" value={answer} />
+                            {answer}
+                        </label>
+                    </div>
+                )
+            }
+            //
+
+            // set correct answer
+            const correctVal = data.question_answer;
+            // get rid of weird characters
+
+            var question_info = data.question_title;
+            setQuestion(question_info);
+            setAllAnswers(possible_answers);
+            setCorrectAns(correctVal);
+            
+
+
+
+
+        })
+        
+    }
     React.useEffect(() => {
 
         fetch(`/api/category/${api_id}`, {
@@ -170,7 +216,7 @@ function CategoryQuestion(props) {
 
         })
         
-    }, [props.question])
+    }, [props.question], [props.allAnswers])
 
     // get the question info
     return (
@@ -184,10 +230,14 @@ function CategoryQuestion(props) {
                     <Button className="btn" type="submit" onClick={checkAnswer}>
                         Submit
                     </Button>
+                    <Button className="btn" type="submit" onClick={getQuestion}>
+                        >>
+                    </Button>
                 </Form>
                 
     )
 
 }
+
 
 ReactDOM.render(<App />, document.getElementById('root'))
